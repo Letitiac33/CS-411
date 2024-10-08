@@ -7,7 +7,9 @@ animals: List[int] = []
 health_status: Optional[str] = None
 size: int
 species: str
-species: str
+start_date: str
+start_location: Habitat
+status: str = "Scheduled"
 
 class Animal:
 

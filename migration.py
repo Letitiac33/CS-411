@@ -25,5 +25,20 @@ class Migration:
         self.paths = paths or {}
         self.species = species
         self.animals = animals or {}
+    def get_migration_details(self) -> dict[str, Any]:
+        pass
+    def get_migration_paths() -> list[MigrationPath]:
+        pass
+    def get_migrations() -> list[Migration]:
+        pass
+    def update_migration_details(self, **kwargs: Any) -> None:
+        pass
+
+    def update_migration_path_details(self, **kwargs) -> None:
+        pass
+
+
+
+
 
 

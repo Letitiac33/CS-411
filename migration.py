@@ -9,7 +9,7 @@ migration_path: MigrationPath
 migrations: dict[int, Migration] = {}
 path_id: int
 paths: dict[int, MigrationPath] = {}
-
+species: str
 class Migration:
 
     pass

@@ -7,7 +7,7 @@ class Migration:
                  current_location: str,
                  destination: Habitat,
                  duration: Optional[int] = None,
-                 migration_path: 'MigrationPath' = None,  # Assuming MigrationPath is defined elsewhere
+                 migration_path: 'MigrationPath' = None, 
                  migrations: Optional[Dict[int, 'Migration']] = None,
                  path_id: int = 0,
                  paths: Optional[Dict[int, 'MigrationPath']] = None,

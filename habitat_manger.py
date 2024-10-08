@@ -5,8 +5,9 @@ class HabitatManager:
     def __init__(self) -> None:
         habitats: dict[int, Habitat] = {}
 
-     def create_habitat(self, habitat_id: int, geographic_area: str, size: int, environment_type: str) -> Habitat:
+     def create_habitat(self, geographic_area: str, size: int, environment_type: str) -> Habitat:
         pass
+
 
     def get_habitat_by_id(self, habitat_id: int) -> Habitat:
         pass

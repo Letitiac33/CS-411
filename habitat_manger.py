@@ -1,8 +1,8 @@
 from typing import Optional, List
+from wildlife_tracker.habitat_management.habitat import Habitat
 
-class HabitatManager:
+class HabitatManager:   
+    def __init__(self) -> None:
+        habitats: dict[int, Habitat] = {}
 
-        def __init__(self) -> None:
-        animals: dict[int, Animal] = {}
 
-    pass

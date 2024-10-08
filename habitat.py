@@ -1,10 +1,5 @@
 from typing import Any, List, Optional
 
-environment_type: str
-geographic_area: str
-habitat_id: int
-habitats: dict[int, Habitat] = {}
-
 class Habitat:
 
     def __init__(self,

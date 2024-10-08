@@ -10,6 +10,7 @@ migrations: dict[int, Migration] = {}
 path_id: int
 paths: dict[int, MigrationPath] = {}
 species: str
+animals: dict[int, Animal] = {}
 class Migration:
 
     pass

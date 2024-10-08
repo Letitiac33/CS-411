@@ -17,4 +17,9 @@ class Animal:
         self.start_location = start_location
         self.status = status
 
+    def get_animal_details(self, animal_id: int) -> dict[str, Any]:
+        pass
+    def update_animal_details(self, animal_id: int, **kwargs: Any) -> None:
+        pass
+
     pass

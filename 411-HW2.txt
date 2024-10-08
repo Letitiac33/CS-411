@@ -1,0 +1,20 @@
+﻿Agile
+* As a vanilla git power-user that has never seen GiggleGit before, I want to quickly understand how to use the unique merge features and integrate them into my existing workflow, so I can decide if it's worth adopting.
+* As a team lead onboarding an experienced GiggleGit user, I want to ensure that the new member can independently set up their environment and access the project's repositories, so we can collaborate without delays. 
+* As a project manager, I want to easily track and visualize the merge history using memes, so I can identify conflicts and understand how code changes are being integrated across the team.
+   * Task: Implement meme-based merge visualization
+   * Ticket 1: Design Meme Merge Flow
+      * Description: Create a visual representation of the merge history using memes, ensuring it provides clear information about the merge status and conflicts. Research similar visualization methods to make it intuitive and engaging for the user.
+   * Ticket 2: Integrate Meme Merge Flow into UI
+      * Description: Implement the designed meme-based merge visualization in the user interface of GiggleGit. Ensure it interacts seamlessly with the backend to display real-time merge updates and conflict resolution information.
+* This is not a proper user story because it does not include information about who the user is, instead, it is a requirement. 
+Formal Requirements
+* Goal: Ensure that SnickerSync effectively integrates with the base GiggleGit packages to provide a smooth syncing experience while gathering user feedback through structured user studies.
+* Non-Goal: extend beyond the current features set in the initial user study phase.
+ Requirements
+* Ensure that only authorized personnel, like product managers and researchers, have access to modify snickering concepts.
+   * Implement a system that gives different users different roles, that allows product managers to edit and manage the snickering concepts but restricts regular users from making changes.
+   * Create a log of all modifications made to the snickering concepts, specifying which user made the change and when.
+* Implement random assignment of users into research groups to ensure valid results.
+   * Develop an algorithm to randomly assign users to either control or experimental groups during the user study, ensuring a balanced distribution.
+   * Store and track each user's group assignment in a secure database

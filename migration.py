@@ -26,4 +26,6 @@ class Migration:
         self.species = species
         self.animals = animals or {}
 
+    def cancel_migration(self) -> None:
     pass
+

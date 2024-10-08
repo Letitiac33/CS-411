@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, List, Optional
 
 class Migration:
     def __init__(self,

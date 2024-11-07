@@ -130,14 +130,113 @@ get_meal_by_name() {
     exit 1
   fi
 }
+#new feature
+get_meal_by_name() {
+  meal_name=$1
+
+  echo "Getting meal by name ($meal_name)..."
+  response=$(curl -s -X GET "$BASE_URL/get-meal-by-name/$meal_name")
+  if echo "$response" | grep -q '"status": "success"'; then
+    echo "Meal retrieved successfully by name ($meal_name)."
+    if [ "$ECHO_JSON" = true ]; then
+      echo "Meal JSON (name $meal_name):"
+      echo "$response" | jq .
+    fi
+  else
+    echo "Failed to get meal by name ($meal_name)."
+    exit 1
+  fi
+}
 
 
 ############################################################
 #
-# Battle
+# Battle Management 
+# from this point all new feature 
+############################################################
+
+# Clear combatants
+clear_combatants() {
+  echo "Clearing combatants..."
+  response=$(curl -s -X POST "$BASE_URL/clear-combatants")
+  if echo "$response" | grep -q '"status": "success"'; then
+    echo "Combatants cleared successfully."
+  else
+    echo "Failed to clear combatants."
+    exit 1
+  fi
+}
+
+# Prepare a combatant for battle
+prep_combatant() {
+  meal=$1
+  echo "Preparing combatant: $meal"
+  response=$(curl -s -X POST "$BASE_URL/prep-combatant" -H "Content-Type: application/json" -d "{\"meal\": \"$meal\"}")
+  if echo "$response" | grep -q '"status": "success"'; then
+    echo "Combatant prepared successfully."
+    if [ "$ECHO_JSON" = true ]; then
+      echo "$response" | jq .
+    fi
+  else
+    echo "Failed to prepare combatant."
+    exit 1
+  fi
+}
+
+# Start a battle
+start_battle() {
+  echo "Starting battle..."
+  response=$(curl -s -X GET "$BASE_URL/battle")
+  if echo "$response" | grep -q '"status": "success"'; then
+    echo "Battle started successfully. Winner: $(echo $response | jq -r '.winner')"
+  else
+    echo "Failed to start battle."
+    exit 1
+  fi
+}
+
+# Get combatants
+get_combatants() {
+  echo "Retrieving combatants..."
+  response=$(curl -s -X GET "$BASE_URL/get-combatants")
+  if echo "$response" | grep -q '"status": "success"'; then
+    echo "Combatants retrieved successfully."
+    if [ "$ECHO_JSON" = true ]; then
+      echo "$response" | jq .
+    fi
+  else
+    echo "Failed to retrieve combatants."
+    exit 1
+  fi
+}
+
+############################################################
+#
+# Leaderboard Management
 #
 ############################################################
 
+# Get the leaderboard sorted by a specified field
+get_leaderboard() {
+  sort_by=$1
+  echo "Retrieving leaderboard sorted by $sort_by..."
+  response=$(curl -s -X GET "$BASE_URL/leaderboard?sort=$sort_by")
+  if echo "$response" | grep -q '"status": "success"'; then
+    echo "Leaderboard retrieved successfully (sorted by $sort_by)."
+    if [ "$ECHO_JSON" = true ]; then
+      echo "$response" | jq .
+    fi
+  else
+    echo "Failed to retrieve leaderboard."
+    exit 1
+  fi
+}
+
+###############################################
+#
+# Run Smoke Tests
+#
+###############################################
 
 # Health checks
 check_health
@@ -157,3 +256,26 @@ delete_meal_by_id 1
 # Atempt to get meal
 get_meal_by_name "Dumplings"
 get_meal_by_id 2
+
+# new test features from here
+# Test meal deletion
+delete_meal_by_id 1
+
+# Prepare combatants
+clear_combatants
+prep_combatant "Pasta"
+prep_combatant "Tacos"
+
+# Start a battle
+start_battle
+
+# Check combatants after battle
+get_combatants
+
+# Retrieve leaderboard sorted by wins
+get_leaderboard "wins"
+
+# Clear catalog again to clean up
+clear_catalog
+
+echo "All smoketests completed successfully!"

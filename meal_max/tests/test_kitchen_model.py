@@ -108,7 +108,7 @@ def test_create_meal_invalid_difficulty():
     with pytest.raises(ValueError, match="Invalid difficulty level: HARD. Must be 'LOW', 'MED', or 'HIGH'."):
         create_meal(meal="Pasta", cuisine = "Italian", price = 19.99, difficulty= "HARD")
 
-def test_delete_song(mock_cursor):
+def test_delete_meal(mock_cursor):
     """Test soft deleting a meal from the database by meal ID."""
 
     # Simulate that the meal exists (id = 1)
@@ -360,3 +360,11 @@ def test_update_meal_stats_invalid_result(mock_cursor):
 
     # Ensure that no SQL query for updating play count was executed
     mock_cursor.execute.assert_called_once_with("SELECT deleted FROM meals WHERE id = ?", (1,))
+
+def test_update_meal_stats_bad_id(mock_cursor):
+    """Test no meal exists for an given id"""
+    mock_cursor.fetchone.return_value = None  # Simulate meal not found
+    # Patch the get_db_connection function to use the mock cursor
+    with pytest.raises(ValueError, match="Meal with ID 999 not found"):
+        update_meal_stats(999, "win")
+  

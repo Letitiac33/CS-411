@@ -21,10 +21,11 @@ class Meal:
     difficulty: str
 
     def __post_init__(self):
-        """ Validates that price is positive and difficulty is one of 'LOW", 'END', or 'HIGH'
+        """ 
+        Validates that price is positive and difficulty is one of 'LOW", 'END', or 'HIGH'
         
-            Raises: 
-                ValueError: If rice is not positive or if difficulty is invalid
+        Raises: 
+            ValueError: If rice is not positive or if difficulty is invalid
         """
         if self.price < 0:
             raise ValueError("Price must be a positive value.")
@@ -33,7 +34,8 @@ class Meal:
 
 
 def create_meal(meal: str, cuisine: str, price: float, difficulty: str) -> None:
-    """Creates a new meal in the database
+    """
+        Creates a new meal in the database
         Args:
             meals(str): The name of the meal.
             cuisince(str): The cuisine type of the meal.
@@ -90,7 +92,8 @@ def clear_meals() -> None:
         raise e
 
 def delete_meal(meal_id: int) -> None:
-    """Marks a meal as deleted in the database
+    """
+    Marks a meal as deleted in the database
 
     Args:
         meal_id (int): the uniqe identifier of the meal to be deleted
@@ -122,17 +125,18 @@ def delete_meal(meal_id: int) -> None:
         raise e
 
 def get_leaderboard(sort_by: str="wins") -> dict[str, Any]:
-    """Retrieves a leaderboard of meals based on win count or win percentage.
+    """
+    Retrieves a leaderboard of meals based on win count or win percentage.
 
-        Args:
-            sort_by(str): The field to sort by, either "wins" or "win_pct".
+    Args:
+        sort_by(str): The field to sort by, either "wins" or "win_pct".
 
-        Returns: 
-            List[dict[str,Any]]: A list of dictionaryies with learderboard information of each meal.
+    Returns: 
+        List[dict[str,Any]]: A list of dictionaryies with learderboard information of each meal.
         
-        Raises: 
-            ValueError: If the sort_by parameter is invalid.
-            sqlite3.Error: For database errors
+    Raises: 
+        ValueError: If the sort_by parameter is invalid.
+        sqlite3.Error: For database errors
     """
     query = """
         SELECT id, meal, cuisine, price, difficulty, battles, wins, (wins * 1.0 / battles) AS win_pct
@@ -175,7 +179,8 @@ def get_leaderboard(sort_by: str="wins") -> dict[str, Any]:
         raise e
 
 def get_meal_by_id(meal_id: int) -> Meal:
-    """Fetches a meal by its unique ID.
+    """
+    Fetches a meal by its unique ID.
 
     Args:
         meal_id(int): The unique identifier of the meal.
@@ -208,7 +213,8 @@ def get_meal_by_id(meal_id: int) -> Meal:
 
 
 def get_meal_by_name(meal_name: str) -> Meal:
-    """Fetches a meal by its name.
+    """
+    Fetches a meal by its name.
 
     Args:
         meal_name(str): the name of the meal
@@ -241,7 +247,8 @@ def get_meal_by_name(meal_name: str) -> Meal:
 
 
 def update_meal_stats(meal_id: int, result: str) -> None:
-    """Updates the battle statistics for a meal based on the result.
+    """
+    Updates the battle statistics for a meal based on the result.
 
     Args: 
         meal_id(int): The unique identifier of the meal

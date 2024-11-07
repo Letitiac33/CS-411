@@ -186,8 +186,8 @@ def test_get_leaderboard(mock_cursor):
 
     # Simulate meals with unsorted wins for testing the sort functionality
     mock_cursor.fetchall.return_value = [
-        (2, "Tacos", "Mexican", 15.0, "MED", 7, 4, 0.571),
         (3, "Dumplings", "Chinese", 12.0, "HIGH", 10, 7, 0.7),
+        (2, "Tacos", "Mexican", 15.0, "MED", 7, 4, 0.571),
         (1, "Pasta", "Italian", 10.0, "LOW", 5, 3, 0.6)
     ]
 

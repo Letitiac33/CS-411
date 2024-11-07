@@ -184,26 +184,27 @@ def test_clear_meals(mock_cursor, mocker):
 def test_get_leaderboard(mock_cursor):
     """Test retrieving leaderboard sorted by wins."""
 
-    # Simulate that there are multiple meals in the database
+    # Simulate meals with unsorted wins for testing the sort functionality
     mock_cursor.fetchall.return_value = [
-        (3, "Dumplings", "Chinese", 12.0, "HIGH", 10, 7, 0.7),    
         (2, "Tacos", "Mexican", 15.0, "MED", 7, 4, 0.571),
+        (3, "Dumplings", "Chinese", 12.0, "HIGH", 10, 7, 0.7),
         (1, "Pasta", "Italian", 10.0, "LOW", 5, 3, 0.6)
     ]
 
     # Call the get_leaderboard function with sort_by = wins
-    leaderboard = get_leaderboard(sort_by = "wins")
+    leaderboard = get_leaderboard(sort_by="wins")
 
-    # Expected result based on the simulated fetchall return value
+    # Define the expected output after sorting by wins
     expected_result = [
         {'id': 3, 'meal': 'Dumplings', 'cuisine': 'Chinese', 'price': 12.0, 'difficulty': 'HIGH', 'battles': 10, 'wins': 7, 'win_pct': 70.0},
         {'id': 2, 'meal': 'Tacos', 'cuisine': 'Mexican', 'price': 15.0, 'difficulty': 'MED', 'battles': 7, 'wins': 4, 'win_pct': 57.1},
         {'id': 1, 'meal': 'Pasta', 'cuisine': 'Italian', 'price': 10.0, 'difficulty': 'LOW', 'battles': 5, 'wins': 3, 'win_pct': 60.0},
     ]
 
+    # Assert that leaderboard matches the expected sorted order by wins
     assert leaderboard == expected_result, f"Expected {expected_result}, but got {leaderboard}"
 
-    # Ensure the SQL query was executed correctly
+    # Verify the SQL query executed in get_leaderboard matches the expected structure
     expected_query = normalize_whitespace("""
         SELECT id, meal, cuisine, price, difficulty, battles, wins, (wins * 1.0 / battles) AS win_pct
         FROM meals WHERE deleted = false AND battles > 0

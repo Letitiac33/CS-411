@@ -273,6 +273,9 @@ get_combatants
 # Retrieve leaderboard sorted by wins
 get_leaderboard "wins"
 
+# Retrieve leaderboard sorted by win percentage
+get_leaderboard "win_pct"
+
 # Clear catalog again to clean up
 clear_catalog
 

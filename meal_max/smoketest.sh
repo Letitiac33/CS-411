@@ -258,13 +258,11 @@ get_meal_by_name "Dumplings"
 get_meal_by_id 2
 
 # new test features from here
-# Test meal deletion
-delete_meal_by_id 1
 
 # Prepare combatants
 clear_combatants
-prep_combatant "Pasta"
 prep_combatant "Tacos"
+prep_combatant "Dumplings"
 
 # Start a battle
 start_battle

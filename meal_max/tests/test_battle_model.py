@@ -16,15 +16,6 @@ def mock_update_meal_stats(mocker):
     return mocker.patch("meal_max.models.battle_model.update_meal_stats")
 
 
-##@pytest.fixture
-##def mock_get_random(mocker):
-##    return mocker.patch("meal_max.models.utils.random_utils.get_random")
-
-"""Fixtures providing sample meals for the tests."""
-@pytest.fixture
-def mock_get_random():
-    return 0.42
-
 @pytest.fixture
 def mock_combatant_1():
     return Meal(id=1, meal="Meal A", price=10.0, cuisine="Italian", difficulty="HIGH")
@@ -45,29 +36,42 @@ def sample_battle(mock_combatant_1, mock_combatant_2):
 #
 ######################################################
 
-def test_battle(battle_model, mock_combatant_1, mock_combatant_2, mock_update_meal_stats, mock_get_random):
+def test_battle(battle_model, mock_combatant_1, mock_combatant_2, mock_update_meal_stats, mocker):
     """Test the battle function between two combatants."""
     battle_model.prep_combatant(mock_combatant_1)
     battle_model.prep_combatant(mock_combatant_2)
+
     
-    mock_random = mocker.patch("meal_max.utils.random_util.get_random", return_value= 0.42)
+    mock_random = mocker.patch("meal_max.models.battle_model.get_random", return_value= 0.42)
  
-    winner = battle_model.battle()
+    result = battle_model.battle()
+
+    winner = mock_combatant_2
+    expected_result = winner.meal
+
+    assert result == expected_result, f"Expected {expected_result}, got {result}"
+    mock_random.assert_called_once_with()
     
     # Ensure one combatant is removed after the battle
-    assert len(battle_model.combatants) == 1, "Only one combatant should remain after the battle."
+    assert len(battle_model.combatants) == 1, f"Only one combatant should remain after the battle."
 
-    #get scores
-    score_1 = battle_model.get_battle_score(mock_combatant_1)
-    score_2 = battle_model.get_battle_score(mock_combatant_2)
-    delta = score_1 - score_2 #.33
-    random_num = mock_get_random #.42 
-    
-    if (delta > random_num):
-        assert winner == (1, "Meal A", 10.0, "Italian", "HIGH")
+    #test that loser left
+    assert mock_combatant_1 not in battle_model.combatants, f"Loser should not remain in battle."
 
-    else:
-        assert winner == (2, "Meal B", 15.0, "Mexican", "LOW")
+    # Test that the winner remains
+    assert mock_combatant_2 in battle_model.combatants, f"Winner should remain after the battle."
+
+    #test that stats are updated
+    mock_update_meal_stats.assert_any_call(mock_combatant_1.id, 'loss')
+    mock_update_meal_stats.assert_any_call(mock_combatant_2.id, "win")
+
+def test_battle_one_combatant(battle_model, mock_combatant_1):
+    """Test that a battle cannot start with fewer than two combatants."""
+    # Add only one combatant
+    battle_model.prep_combatant(mock_combatant_1)
+    # Expect ValueError due to insufficient combatants
+    with pytest.raises(ValueError, match="Two combatants must be prepped for a battle"):
+        battle_model.battle()
 
 def test_clear_combatants(battle_model, mock_combatant_1, mock_combatant_2):
     """Test clearing all combatants."""
@@ -107,16 +111,15 @@ def test_prep_combatant(battle_model, mock_combatant_1, mock_combatant_2):
     battle_model.prep_combatant(mock_combatant_2)
     assert len(battle_model.combatants) == 2, "Two combatants should be present in the list."
 
+def test_prep_combatants_extra_combatant(battle_model, mock_combatant_1, mock_combatant_2):
+    """Test adding a 3rd combatant to battle mode."""""
+    battle_model.prep_combatant(mock_combatant_1)
+    assert len(battle_model.combatants) == 1, "One combatant should be added to the list."
+
+    battle_model.prep_combatant(mock_combatant_2)
+    assert len(battle_model.combatants) == 2, "Two combatants should be present in the list."
+
     # Attempt to add a third combatant and expect an error
     with pytest.raises(ValueError, match="Combatant list is full"):
         battle_model.prep_combatant(Meal(id=3, meal="Meal C", price=12.0, cuisine="Chinese", difficulty="MED"))
-
-def test_prep_combatants_extra_combatant():
-    return None
-
-######################################################
-#
-#    Get Combatants
-#
-######################################################
-
+    
